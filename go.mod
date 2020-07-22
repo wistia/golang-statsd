@@ -1,4 +1,4 @@
-module statsd
+module github.com/wistia/golang-statsd
 
 go 1.13
 
