@@ -2,29 +2,20 @@ package statsd
 
 import (
 	"fmt"
-	"time"
-
 	"github.com/DataDog/datadog-go/statsd"
+	log "github.com/sirupsen/logrus"
+	"time"
 )
 
 const standardPort = "8125"
 
 var client *statsd.Client
-var log ErrorLogger
 
 func init() {
 	Disable()
 }
 
-type ErrorLogger interface {
-	Printf(format string, args ...interface{})
-}
-
-type silentLogger struct {}
-func (s silentLogger) Printf(format string, args ...interface{}) {}
-
-func Configure(host, namespace, env, component string, logger ErrorLogger) error {
-	log = logger
+func Configure(host, namespace, env, component string) error {
 	c, err := statsd.New(host + ":" + standardPort)
 	if err != nil {
 		return err
@@ -45,7 +36,6 @@ func Configure(host, namespace, env, component string, logger ErrorLogger) error
 }
 
 func Disable() error {
-	log = silentLogger{}
 	c, err := statsd.NewWithWriter(SilentStatsdWriter{})
 	if err != nil {
 		return err
