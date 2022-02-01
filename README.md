@@ -15,9 +15,10 @@ namespace := "dinos"
 env := "prod"
 component := "comics"  
 
-statsd.Configure(statsd_host, namespace, env, component)  
+statsd.Configure(statsd_host, namespace, env, component, myLogger)  
 ```
 `component` will be added as a tag under the key 'component'  
+`myLogger` — pass the logger you've configured and are using in your app
 
 #### Disable golang-statsd:
 `statsd.Disable()`  
