@@ -1,37 +1,40 @@
 package statsd
 
 import (
-	"fmt"
-	"github.com/DataDog/datadog-go/statsd"
-	log "github.com/sirupsen/logrus"
 	"time"
+
+	"github.com/DataDog/datadog-go/v5/statsd"
 )
 
 const standardPort = "8125"
 
 var client *statsd.Client
+var log Logger
 
 func init() {
 	Disable()
 }
 
-func Configure(host, namespace, env, component string) error {
-	c, err := statsd.New(host + ":" + standardPort)
+func Configure(host, namespace, env, component string, logger Logger) error {
+	log = logger
+	var tags []string
+
+	if env != "" {
+		tags = append(tags, "env:"+env)
+	}
+	if component != "" {
+		tags = append(tags, "component:"+component)
+	}
+
+	c, err := statsd.New(host+":"+standardPort,
+		statsd.WithNamespace(namespace),
+		statsd.WithTags(tags))
 	if err != nil {
 		return err
 	}
 
-	c.Namespace = fmt.Sprintf("%s.", namespace)
-
-	if env != "" {
-		c.Tags = append(c.Tags, "env:"+env)
-	}
-
-	if component != "" {
-		c.Tags = append(c.Tags, "component:"+component)
-	}
-
 	client = c
+
 	return nil
 }
 
@@ -94,8 +97,18 @@ func SimpleMeasureExecTime(name string, start time.Time) time.Duration {
 	return MeasureExecTime(name, []string{}, 1.0, start)
 }
 
+func Flush() {
+	if err := client.Flush(); err != nil {
+		logMetricError(err)
+	}
+}
+
 func logMetricError(err error) {
 	log.Printf("error reporting metric: %v", err)
+}
+
+type Logger interface {
+	Printf(format string, args ...interface{})
 }
 
 type SilentStatsdWriter struct{}
