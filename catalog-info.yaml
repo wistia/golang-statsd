@@ -8,9 +8,9 @@ metadata:
   annotations:
     github.com/project-slug: wistia/golang-statsd
     backstage.io/techdocs-ref: dir:.
-  spec:
-    type: library
-    owner: infrastructure
-    lifecycle: production
   tags:
     - lang#go
+spec:
+  type: library
+  owner: infrastructure
+  lifecycle: production
