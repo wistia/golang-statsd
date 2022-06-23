@@ -83,6 +83,11 @@ func Incr(name string, tags []string, rate float64) {
 	}
 }
 
+// IncrByOne convenience function that increments the tags by exactly 1
+func IncrByOne(name string, tags ...string) {
+	IncrByOne(name, tags...)
+}
+
 // MeasureExecTime returns the execution time in milliseconds since the provided start time. It's
 // intended to be used with a defer block.
 func MeasureExecTime(name string, tags []string, rate float64, start time.Time) time.Duration {
