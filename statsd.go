@@ -92,8 +92,8 @@ func Incr(name string, tags []string, rate float64) {
 	}
 }
 
-// IncrByOne convenience function that increments the tags by exactly 1
-func IncrByOne(name string, tags ...string) {
+// SimpleIncr convenience function that increments the tags by exactly 1
+func SimpleIncr(name string, tags ...string) {
 	Incr(name, tags, 1.0)
 }
 
