@@ -39,7 +39,7 @@ func Configure(host, namespace, env, component string, logger Logger) error {
 	return nil
 }
 
-// Disable disables the internal client by using a SilentStatsdWriter
+// Disable stops metrics from being emitted
 func Disable() error {
 	c, err := statsd.NewWithWriter(SilentStatsdWriter{})
 	if err != nil {
@@ -49,7 +49,7 @@ func Disable() error {
 	return nil
 }
 
-// Count tracks how many times something happened per second.
+// Count increments the given metric by the given value
 func Count(name string, value int64, tags []string, rate float64) {
 	if err := client.Count(name, value, tags, rate); err != nil {
 		logMetricError(err)
@@ -85,14 +85,14 @@ func Histogram(name string, value float64, tags []string, rate float64) {
 	}
 }
 
-// Incr is just Count of -1
+// Incr is just Count of 1
 func Incr(name string, tags []string, rate float64) {
 	if err := client.Incr(name, tags, rate); err != nil {
 		logMetricError(err)
 	}
 }
 
-// SimpleIncr convenience function that increments the tags by exactly 1
+// SimpleIncr is a convenience function that increments the metric by exactly 1
 func SimpleIncr(name string, tags ...string) {
 	Incr(name, tags, 1.0)
 }
@@ -111,10 +111,8 @@ func SimpleMeasureExecTime(name string, start time.Time) time.Duration {
 	return MeasureExecTime(name, []string{}, 1.0, start)
 }
 
-// Flush forces a flush of all the queued dogstatsd payloads This method is
+// Flush forces a flush of all the queued dogstatsd payloads. This method is
 // blocking and will not return until everything is sent through the network.
-// In mutexMode, this will also block sampling new data to the client while the
-// workers and sender are flushed.
 func Flush() {
 	if err := client.Flush(); err != nil {
 		logMetricError(err)
