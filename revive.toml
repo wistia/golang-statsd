@@ -1,0 +1,45 @@
+# https://github.com/mgechev/revive#available-rules
+# or official docs for friendlier view
+# https://revive.run/r
+
+# When set to false, ignores files with "GENERATED" header, similar to golint
+ignoreGeneratedHeader = true
+
+# Sets the default severity to "warning"
+#severity = "warning"
+
+# Sets the default failure confidence. This means that linting errors
+# with less than 0.8 confidence will be ignored.
+confidence = 0.8
+
+[rule.blank-imports]
+[rule.context-as-argument]
+[rule.context-keys-type]
+[rule.dot-imports]
+[rule.error-return]
+[rule.error-strings]
+[rule.error-naming]
+[rule.if-return]
+[rule.increment-decrement]
+[rule.var-declaration]
+[rule.package-comments]
+[rule.range]
+[rule.receiver-naming]
+[rule.time-naming]
+[rule.indent-error-flow]
+[rule.errorf]
+[rule.empty-block]
+[rule.unreachable-code]
+[rule.redefines-builtin-id]
+[rule.superfluous-else]
+[rule.time-equal]
+[rule.atomic]
+[rule.duplicated-imports]
+# Naming and commenting conventions on exported symbols.
+[rule.exported]
+[rule.unhandled-error]
+    arguments =["fmt.Printf"]
+# This rule warns when variable or package naming conventions are not followed.
+[rule.var-naming]
+[rule.unexported-return]
+[rule.unused-parameter]

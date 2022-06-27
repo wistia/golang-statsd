@@ -1,0 +1,6 @@
+#!/usr/bin/env just --justfile
+
+lint:
+	@if ! which revive&>/dev/null; then go install github.com/mgechev/revive@latest; fi
+	@go fmt ./...
+	@revive -config revive.toml -formatter friendly -exclude vendor/... ./...
