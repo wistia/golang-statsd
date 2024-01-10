@@ -30,6 +30,8 @@ jobs:
   lint:
     runs-on: ubuntu-22.04
     steps:
+      - uses: actions/checkout@v4
+  
       - uses: extractions/setup-just@v1
         with:
           just-version: '1.22.1'
