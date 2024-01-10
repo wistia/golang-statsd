@@ -1,6 +1,8 @@
 package statsd
 
 import (
+	"fmt"
+	"strings"
 	"time"
 
 	"github.com/DataDog/datadog-go/v5/statsd"
@@ -27,6 +29,10 @@ func Configure(host, namespace, env, component string, logger Logger) error {
 		tags = append(tags, "component:"+component)
 	}
 
+	if IsIPv6(host) {
+		host = fmt.Sprintf("[%s]", host)
+	}
+
 	c, err := statsd.New(host+":"+standardPort,
 		statsd.WithNamespace(namespace),
 		statsd.WithTags(tags))
@@ -37,6 +43,10 @@ func Configure(host, namespace, env, component string, logger Logger) error {
 	client = c
 
 	return nil
+}
+
+func IsIPv6(address string) bool {
+	return strings.Count(address, ":") >= 2
 }
 
 // Disable stops metrics from being emitted
