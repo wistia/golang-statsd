@@ -45,6 +45,7 @@ func Configure(host, namespace, env, component string, logger Logger) error {
 	return nil
 }
 
+// IsIPv6 checks whether the given address conforms to IPv6 notation
 func IsIPv6(address string) bool {
 	return strings.Count(address, ":") >= 2
 }
